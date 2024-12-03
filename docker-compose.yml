@@ -1,0 +1,27 @@
+#version: '3.8'
+
+services:
+  ToDoPro:
+    container_name: ToDoPro
+    image: pee-java-app:ToDoPro-1.0.0
+    build: .
+    ports:
+      - 8081:8080
+    environment:
+      - DATABASE_URL=jdbc:postgresql://todopro_db:5432/todopro
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=postgres
+    depends_on:
+      - todopro_db
+    working_dir: /app
+    command: mvm spring-boot:run
+
+  todopro_db:
+    container_name: todopro_db
+    image: postgres:12
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: todopro
